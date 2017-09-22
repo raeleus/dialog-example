@@ -60,6 +60,7 @@ public class Core extends ApplicationAdapter {
     
     @Override
     public void create() {
+        //initialize game related variables
         gameCamera = new OrthographicCamera();
         gameViewport = new ScreenViewport(gameCamera);
         gameViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -70,6 +71,7 @@ public class Core extends ApplicationAdapter {
         TextureRegion textureRegion = textureAtlas.findRegion("player");
         entities.add(new PlayerEntity(textureRegion));
         
+        //initialize UI related variables
         gamePaused = false;
         errorCount = 0;
         core = this;
