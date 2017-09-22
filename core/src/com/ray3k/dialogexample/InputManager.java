@@ -34,8 +34,9 @@ import com.badlogic.gdx.InputAdapter;
 public class InputManager extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Keys.R) {
-            //do something
+        if (!Core.getCore().isGamePaused() && keycode == Keys.R) {
+            Core.getCore().showUsernameDialog();
+            Core.getCore().setGamePaused(true);
         }
         return false;
     }

@@ -25,21 +25,31 @@ package com.ray3k.dialogexample;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Core extends ApplicationAdapter {
     private Skin skin;
     private Stage stage;
     private static Core core;
+    private boolean gamePaused;
     
     @Override
     public void create() {
+        gamePaused = false;
         core = this;
         InputManager inputManager = new InputManager();
         
@@ -74,8 +84,58 @@ public class Core extends ApplicationAdapter {
         skin.dispose();
         stage.dispose();
     }
+    
+    public void showUsernameDialog() {
+        showUsernameDialog("Please enter your username:");
+    }
+    
+    public void showUsernameDialog(String dialogText) {
+        final TextField textField = new TextField("", skin);
+        
+        Dialog dialog = new Dialog("", skin) {
+            @Override
+            protected void result(Object object) {
+                boolean value = (Boolean) object;
+                if (value) {
+                    //validate username
+                    if (textField.getText().length() >= 5) {
+                        //show password dialog
+                    } else {
+                        showUsernameDialog("Invalid username length.\nPlease enter your username:");
+                    }
+                } else {
+                    gamePaused = false;
+                }
+            }
+        };
+        dialog.text(dialogText);
+        
+        dialog.getContentTable().row();
+        dialog.getContentTable().add(textField);
+        
+        dialog.button("OK", true).button("Cancel", false);
+        dialog.key(Keys.ESCAPE, false).key(Keys.ENTER, true);
+        
+        dialog.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade), new Action() {
+            @Override
+            public boolean act(float delta) {
+                stage.setKeyboardFocus(textField);
+                return true;
+            }
+        }));
+        dialog.setSize(300.0f, 200.0f);
+        dialog.setPosition(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, Align.center);
+    }
 
     public static Core getCore() {
         return core;
+    }
+
+    public boolean isGamePaused() {
+        return gamePaused;
+    }
+
+    public void setGamePaused(boolean gamePaused) {
+        this.gamePaused = gamePaused;
     }
 }
