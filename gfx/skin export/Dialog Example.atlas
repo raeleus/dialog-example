@@ -1,0 +1,69 @@
+
+Dialog Example.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+button
+  rotate: false
+  xy: 185, 308
+  size: 114, 41
+  split: 2, 2, 2, 2
+  pad: 3, 3, 3, 3
+  orig: 114, 41
+  offset: 0, 0
+  index: -1
+button-pressed
+  rotate: false
+  xy: 1, 4
+  size: 114, 41
+  split: 2, 2, 2, 2
+  pad: 3, 3, 3, 3
+  orig: 114, 41
+  offset: 0, 0
+  index: -1
+font-button-export
+  rotate: false
+  xy: 1, 167
+  size: 182, 182
+  orig: 182, 182
+  offset: 0, 0
+  index: -1
+font-export
+  rotate: false
+  xy: 185, 199
+  size: 105, 107
+  orig: 105, 107
+  offset: 0, 0
+  index: -1
+player
+  rotate: false
+  xy: 1, 47
+  size: 118, 118
+  orig: 118, 118
+  offset: 0, 0
+  index: -1
+textfield
+  rotate: false
+  xy: 121, 125
+  size: 56, 40
+  split: 5, 5, 5, 5
+  pad: 7, 7, 5, 5
+  orig: 56, 40
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 1, 1
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 301, 309
+  size: 40, 40
+  split: 5, 5, 5, 5
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
