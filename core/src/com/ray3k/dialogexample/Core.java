@@ -143,7 +143,7 @@ public class Core extends ApplicationAdapter {
                 if (value) {
                     //validate password
                     if (textField.getText().length() >= 5) {
-                        //show confirmation dialog
+                        showConfirmationDialog("Correct username and password.\nPrepare to contact server...");
                     } else {
                         showPasswordDialog("Invalid password length.\nPlease enter your password:");
                     }
@@ -167,6 +167,24 @@ public class Core extends ApplicationAdapter {
                 return true;
             }
         }));
+        dialog.setSize(300.0f, 200.0f);
+        dialog.setPosition(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, Align.center);
+    }
+    
+    private void showConfirmationDialog(String dialogText) {
+        Dialog dialog = new Dialog("", skin) {
+            @Override
+            protected void result(Object object) {
+                //login to your server
+                gamePaused = false;
+            }
+        };
+        dialog.text(dialogText);
+        
+        dialog.button("OK");
+        dialog.key(Keys.ESCAPE, null).key(Keys.ENTER, null);
+        
+        dialog.show(stage);
         dialog.setSize(300.0f, 200.0f);
         dialog.setPosition(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, Align.center);
     }
