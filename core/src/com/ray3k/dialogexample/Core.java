@@ -46,10 +46,12 @@ public class Core extends ApplicationAdapter {
     private Stage stage;
     private static Core core;
     private boolean gamePaused;
+    private int errorCount;
     
     @Override
     public void create() {
         gamePaused = false;
+        errorCount = 0;
         core = this;
         InputManager inputManager = new InputManager();
         
@@ -86,10 +88,11 @@ public class Core extends ApplicationAdapter {
     }
     
     public void showUsernameDialog() {
+        errorCount = 0;
         showUsernameDialog("Please enter your username:");
     }
     
-    public void showUsernameDialog(String dialogText) {
+    private void showUsernameDialog(String dialogText) {
         final TextField textField = new TextField("", skin);
         
         Dialog dialog = new Dialog("", skin) {
@@ -101,7 +104,12 @@ public class Core extends ApplicationAdapter {
                     if (textField.getText().length() >= 5) {
                         showPasswordDialog();
                     } else {
-                        showUsernameDialog("Invalid username length.\nPlease enter your username:");
+                        if (errorCount < 3) {
+                            showUsernameDialog("Invalid username length.\nPlease enter your username:");
+                            errorCount++;
+                        } else {
+                            showFailureDialog("Email support\nto retrieve your username.");
+                        }
                     }
                 } else {
                     gamePaused = false;
@@ -145,7 +153,12 @@ public class Core extends ApplicationAdapter {
                     if (textField.getText().length() >= 5) {
                         showConfirmationDialog("Correct username and password.\nPrepare to contact server...");
                     } else {
-                        showPasswordDialog("Invalid password length.\nPlease enter your password:");
+                        if (errorCount < 3) {
+                            showPasswordDialog("Invalid password length.\nPlease enter your password:");
+                            errorCount++;
+                        } else {
+                            showFailureDialog("Email support\nto reset your password.");
+                        }
                     }
                 } else {
                     gamePaused = false;
@@ -176,6 +189,24 @@ public class Core extends ApplicationAdapter {
             @Override
             protected void result(Object object) {
                 //login to your server
+                gamePaused = false;
+            }
+        };
+        dialog.text(dialogText);
+        
+        dialog.button("OK");
+        dialog.key(Keys.ESCAPE, null).key(Keys.ENTER, null);
+        
+        dialog.show(stage);
+        dialog.setSize(300.0f, 200.0f);
+        dialog.setPosition(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, Align.center);
+    }
+    
+    private void showFailureDialog(String dialogText) {
+        Dialog dialog = new Dialog("", skin) {
+            @Override
+            protected void result(Object object) {
+                //do something in response to multiple failed logins
                 gamePaused = false;
             }
         };
