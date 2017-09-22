@@ -99,9 +99,53 @@ public class Core extends ApplicationAdapter {
                 if (value) {
                     //validate username
                     if (textField.getText().length() >= 5) {
-                        //show password dialog
+                        showPasswordDialog();
                     } else {
                         showUsernameDialog("Invalid username length.\nPlease enter your username:");
+                    }
+                } else {
+                    gamePaused = false;
+                }
+            }
+        };
+        dialog.text(dialogText);
+        
+        dialog.getContentTable().row();
+        dialog.getContentTable().add(textField);
+        
+        dialog.button("OK", true).button("Cancel", false);
+        dialog.key(Keys.ESCAPE, false).key(Keys.ENTER, true);
+        
+        dialog.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade), new Action() {
+            @Override
+            public boolean act(float delta) {
+                stage.setKeyboardFocus(textField);
+                return true;
+            }
+        }));
+        dialog.setSize(300.0f, 200.0f);
+        dialog.setPosition(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, Align.center);
+    }
+    
+    private void showPasswordDialog() {
+        showPasswordDialog("Please enter your password:");
+    }
+    
+    private void showPasswordDialog(String dialogText) {
+        final TextField textField = new TextField("", skin);
+        textField.setPasswordCharacter('*');
+        textField.setPasswordMode(true);
+        
+        Dialog dialog = new Dialog("", skin) {
+            @Override
+            protected void result(Object object) {
+                boolean value = (Boolean) object;
+                if (value) {
+                    //validate password
+                    if (textField.getText().length() >= 5) {
+                        //show confirmation dialog
+                    } else {
+                        showPasswordDialog("Invalid password length.\nPlease enter your password:");
                     }
                 } else {
                     gamePaused = false;
